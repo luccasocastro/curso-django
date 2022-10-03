@@ -23,20 +23,20 @@ db: List[User] = [
 ]
 
 @app.get("/")
-def root():
+async def root():
     return {'message':'Hello Wolrd!'}
 
 @app.get("/api/v1/users")
-def fetch_users():
+async def fetch_users():
     return db;
 
 @app.post("/api/v1/users")
-def register_user(user:User):
+async def register_user(user:User):
     db.append(user)
     return {"id": user.id}
 
 @app.delete("/api/v1/users/{user_id}")
-def remove_user(user_id:UUID):
+async def remove_user(user_id:UUID):
     for user in db:
         if user.id == user_id:
             db.remove(user)
@@ -47,7 +47,7 @@ def remove_user(user_id:UUID):
     )
 
 @app.put("/api/v1/users/{user_id}")
-def update_user(user_id:UUID, user_update:UserUpdateRequest):
+async def update_user(user_id:UUID, user_update:UserUpdateRequest):
     for user in db:
         if user.id == user_id:
             if user_update.first_name is not None:
